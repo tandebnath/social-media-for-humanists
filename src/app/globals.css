@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f9fafb;
+  --text: #3b3b3b;
+  --primary: #0077cc;
+  --secondary: #0055aa;
+  --accent: #00aacc;
+}
+
+[data-theme="dark"] {
+  --background: #3b3b3b;
+  --text: #d6d6d6;
+  --primary: #800020;
+  --secondary: #7f1d1d;
+  --accent: #28a7db;
+}
+
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-open-sans), sans-serif; 
+  line-height: 1.6 !important;
+  font-weight: 500 !important;
+  overflow-x: hidden;
+  background-color: var(--background);
+  color: var(--text);
+}
+
+h1{
+  font-family: var(--font-playfair-display), serif;
+  font-weight: 700 !important;
+  font-size: 3rem !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.5px !important;
+  text-align: start;
+} 
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* For screens between 1024px and 1280px (large tablets and small desktops) */
+@media (max-width: 1280px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+/* For screens between 768px and 1024px (tablets) */
+@media (max-width: 1024px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* For screens between 640px and 768px (large phones, small tablets) */
+@media (max-width: 768px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* For screens 640px and below (small phones) */
+@media (max-width: 640px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+/* For screens 480px and below (extra small phones) */
+@media (max-width: 480px) {
+  html {
+    font-size: 11px;
+  }
+}
