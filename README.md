@@ -1,1 +1,1 @@
-# Peritext-website
+# Social Media for Humanists
