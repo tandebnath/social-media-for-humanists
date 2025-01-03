@@ -13,11 +13,18 @@
 }
 
 [data-theme="dark"] {
-  --background: #3b3b3b;
+  --background: #F8F8F8;
+  --text: #333333;
+  --primary: #003366;
+  --secondary: #0055aa;
+  --accent: #CC5500;
+  --white: #fff;
+  --black: #000;
+  /* --background: #3b3b3b;
   --text: #d6d6d6;
   --primary: #800020;
   --secondary: #7f1d1d;
-  --accent: #28a7db;
+  --accent: #28a7db; */
 }
 
 
