@@ -1,5 +1,5 @@
 'use client';
-import { tutorialsData } from "@/modules/TutorialsData";
+import { tutorialsData } from "@/modules/TutorialsListData";
 import Link from "next/link";
 import { motion } from "framer-motion";
 

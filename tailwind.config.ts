@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        montserrat: "var(--font-montserrat)",
-        playfairDisplay: "var(--font-playfair-display)",
+        inter: "var(--font-inter)",
+        lora: "var(--font-lora)",
       },
       colors: {
         background: {

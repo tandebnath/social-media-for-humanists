@@ -1,6 +1,6 @@
 export const contactData = [
   {
-    body: "Have questions or want to learn more about our project? Feel free to reach out to any of the team members listed below. We're excited to share our work and connect with you!",
+    body: "Have questions or want to learn more about our project? Feel free to reach out to any of the team members listed below. We're excited to connect with you!",
   },
   {
     name: "Tess McNulty",

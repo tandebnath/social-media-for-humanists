@@ -1,7 +1,9 @@
 "use client";
 
+import Heading from "@/components/Heading";
 import { contactData } from "@/modules/ContactData";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { FaEnvelope } from "react-icons/fa";
 
 export default function Contact() {
@@ -23,27 +25,36 @@ export default function Contact() {
       <motion.div
         initial="hidden"
         animate="visible"
-        className="mb-10"
+        className="mb-6"
         style={{ color: "var(--text)" }}
       >
-        <h1
-          className="text-3xl font-bold mb-4"
-          style={{ color: "var(--primary)" }}
-        >
-          Contact Us
-        </h1>
-        <p className="text-lg leading-relaxed">{intro.body}</p>
+        <div className="breadcrumbs text-sm mb-4 text-gray-500">
+          <ul className="flex space-x-2">
+            <li>
+              <Link href="/" className="hover:underline">
+                Home
+              </Link>
+            </li>
+            <li>
+              <span className="text-gray-400">/</span>
+            </li>
+            <li className="text-gray-700 font-semibold">Contact</li>
+          </ul>
+        </div>
+        <Heading text="Contact Us" />
+        <p className="text-base leading-relaxed">{intro.body}</p>
       </motion.div>
 
       {/* Contacts Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="flex flex-wrap justify-center gap-8">
         {contacts.map((contact, index) => (
           <motion.div
             key={index}
-            className="flex flex-col items-center text-center p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+            className="flex flex-col items-center justify-center p-6 shadow-lg hover:shadow-xl transition-shadow overflow-hidden w-full max-w-xl"
             style={{
               backgroundColor: "var(--background)",
               color: "var(--text)",
+              filter: "brightness(0.97)", // Subtle darkening of the background
             }}
             initial="hidden"
             animate="visible"
@@ -54,27 +65,38 @@ export default function Contact() {
             <img
               src={contact.image}
               alt={`${contact.name}'s avatar`}
-              className="w-24 h-24 rounded-full mb-4 object-cover shadow-md"
+              className="w-20 h-20 rounded-full mb-4 object-cover shadow-md border-4 border-gray-200"
             />
 
-            {/* Name and Position */}
+            {/* Name */}
             <h3
               className="text-xl font-semibold mb-2"
-              style={{ color: "var(--accent)" }}
+              style={{ color: "var(--primary)" }}
             >
               {contact.name}
             </h3>
-            <p className="text-sm">
+
+            {/* Position */}
+            <p className="text-sm font-medium text-gray-600 mb-1">
               {contact.position}
-              {contact.institution && `, ${contact.institution}`}
             </p>
 
+            {/* Institution */}
+            {contact.institution && (
+              <p className="text-sm font-medium text-gray-500">
+                {contact.institution}
+              </p>
+            )}
+
+            {/* Divider */}
+            <div className="w-full h-[1px] bg-gray-300 mb-4 mt-4"></div>
+
             {/* Email */}
-            <div className="flex items-center justify-center space-x-2 mt-4">
-              <FaEnvelope style={{ color: "var(--accent)" }} />
+            <div className="flex items-center justify-center space-x-2">
+              <FaEnvelope className="text-gray-500" />
               <a
                 href={`mailto:${contact.email}`}
-                className="text-sm hover:underline"
+                className="text-base font-medium hover:underline"
                 style={{ color: "var(--accent)" }}
               >
                 {contact.email}

@@ -1,28 +1,20 @@
 "use client";
-import { tutorialsData } from "@/modules/TutorialsData";
-import Link from "next/link";
+
+import Heading from "@/components/Heading";
+import { generateTutorialsOverview } from "@/functions/generateTutorialsOverview";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
-interface Tutorial {
-  title: string;
-  slug: string;
-  description: string;
-}
+const tutorialsOverviewData = generateTutorialsOverview();
 
-interface TutorialSeries {
-  seriesName: string;
-  seriesSlug: string;
-  tutorials: Tutorial[];
-}
-
-const TutorialsPage: React.FC = () => {
+const TutorialsOverviewPage: React.FC = () => {
   const fadeInVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: (index: number) => ({
+    visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, delay: index * 0.2, ease: "easeOut" },
-    }),
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
   };
 
   return (
@@ -30,62 +22,40 @@ const TutorialsPage: React.FC = () => {
       initial="hidden"
       animate="visible"
       exit="hidden"
+      className="space-y-6 mb-12"
       style={{
         backgroundColor: "var(--background)",
         color: "var(--text)",
       }}
     >
-      <h1
-        className="text-3xl font-bold mb-8"
-        style={{ color: "var(--primary)" }}
-      >
-        Tutorials
-      </h1>
+      <div className="breadcrumbs text-sm mb-4 text-gray-500">
+        <ul className="flex space-x-2">
+          <li>
+            <Link href="/" className="hover:underline">
+              Home
+            </Link>
+          </li>
+          <li>
+            <span className="text-gray-400">/</span>
+          </li>
+          <li className="text-gray-700 font-semibold">Tutorials Overview</li>
+        </ul>
+      </div>
+      <Heading text="Tutorials Overview" />
 
-      {tutorialsData.map((series: TutorialSeries, index: number) => (
-        <motion.div
+      {tutorialsOverviewData.map((section, index) => (
+        <motion.p
           key={index}
-          className="mb-8"
+          className="text-base leading-relaxed"
           variants={fadeInVariants}
           custom={index}
         >
-          <h2
-            className="text-2xl font-semibold mb-4"
-            style={{ color: "var(--text)" }}
-          >
-            {series.seriesName}
-          </h2>
-          <ul className="space-y-4">
-            {series.tutorials.map((tutorial, tutorialIndex) => (
-              <motion.li
-                key={tutorialIndex}
-                className="p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
-                style={{
-                  backgroundColor: "var(--background)",
-                  color: "var(--text)",
-                }}
-                variants={fadeInVariants}
-                custom={tutorialIndex}
-              >
-                <Link
-                  href={`/tutorials/${series.seriesSlug}/${tutorial.slug}`}
-                  className="block"
-                >
-                  <h3
-                    className="text-xl font-medium hover:underline mb-2"
-                    style={{ color: "var(--accent)" }}
-                  >
-                    {tutorial.title}
-                  </h3>
-                  <p className="text-sm">{tutorial.description}</p>
-                </Link>
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
+          {/* Render content directly from the generated data */}
+          <span dangerouslySetInnerHTML={{ __html: section.content }} />
+        </motion.p>
       ))}
     </motion.div>
   );
 };
 
-export default TutorialsPage;
+export default TutorialsOverviewPage;

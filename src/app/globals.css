@@ -3,11 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --background: #f9fafb;
-  --text: #3b3b3b;
-  --primary: #0077cc;
+  --background: #F8F8F8;
+  --text: #333333;
+  --primary: #003366;
   --secondary: #0055aa;
-  --accent: #00aacc;
+  --accent: #CC5500;
+  --white: #fff;
+  --black: #000;
 }
 
 [data-theme="dark"] {
@@ -24,7 +26,7 @@ html {
 }
 
 body {
-  font-family: var(--font-open-sans), sans-serif; 
+  font-family: var(--font-inter), sans-serif;
   line-height: 1.6 !important;
   font-weight: 500 !important;
   overflow-x: hidden;
@@ -32,14 +34,19 @@ body {
   color: var(--text);
 }
 
-h1{
-  font-family: var(--font-playfair-display), serif;
+h1 {
+  font-family: var(--font-lora), serif;
   font-weight: 700 !important;
   font-size: 3rem !important;
   line-height: 1.2 !important;
   letter-spacing: 0.5px !important;
   text-align: start;
-} 
+}
+
+h2 {
+  font-family: var(--font-lora), serif;
+  color: var(--text);
+}
 
 @layer utilities {
   .text-balance {

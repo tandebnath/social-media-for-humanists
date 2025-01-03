@@ -1,18 +1,24 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { FaArrowLeft } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 interface TutorialsContentProps {
   title: string;
   description: string;
-  longDescription: string[];
+  content: string[];
+  seriesSlug: string; // Added to navigate back to the series
 }
 
 const TutorialsContent: React.FC<TutorialsContentProps> = ({
   title,
   description,
-  longDescription,
+  content,
+  seriesSlug,
 }) => {
+  const router = useRouter(); // For navigation back to List of Tutorials
   const fadeInVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -24,10 +30,22 @@ const TutorialsContent: React.FC<TutorialsContentProps> = ({
       animate="visible"
       exit="hidden"
       style={{
-        backgroundColor: "var(--background)",
         color: "var(--text)",
       }}
     >
+      {/* Back to Tutorials Button */}
+      <button
+        onClick={() => router.push(`/tutorials/list#${seriesSlug}`)}
+        className="mb-6 px-4 py-2 text-sm font-semibold text-white"
+        style={{
+          backgroundColor: "var(--accent)",
+          border: "none",
+        }}
+      >
+        <FaArrowLeft className="inline mr-2" />
+        Back to List of Tutorials
+      </button>
+
       {/* Tutorial Title */}
       <motion.h1
         className="text-3xl font-bold mb-4"
@@ -37,26 +55,19 @@ const TutorialsContent: React.FC<TutorialsContentProps> = ({
         {title}
       </motion.h1>
 
-      {/* Tutorial Description */}
-      <motion.p
-        className="text-lg leading-relaxed mb-6"
-        style={{ color: "var(--text)" }}
-        variants={fadeInVariants}
-      >
-        {description}
-      </motion.p>
-
-      {/* Tutorial Long Content */}
-      {longDescription.map((paragraph, index) => (
-        <motion.p
-          key={index}
-          className="text-base leading-relaxed mb-6"
-          style={{ color: "var(--text)" }}
-          variants={fadeInVariants}
-        >
-          {paragraph}
-        </motion.p>
-      ))}
+      {/* Tutorial Content */}
+      <div className="space-y-6">
+        {content.map((paragraph, index) => (
+          <motion.p
+            key={index}
+            className="text-base leading-relaxed"
+            style={{ color: "var(--text)" }}
+            variants={fadeInVariants}
+          >
+            {paragraph}
+          </motion.p>
+        ))}
+      </div>
     </motion.div>
   );
 };

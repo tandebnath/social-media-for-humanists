@@ -1,13 +1,19 @@
 import "./globals.css";
-import { Playfair_Display, Montserrat } from "next/font/google";
+import { Playfair_Display, Inter, Lora } from "next/font/google";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import { ThemeProvider } from "next-themes";
 
 // Load fonts
-const montserrat = Montserrat({
+const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-montserrat",
+  variable: "--font-inter",
+});
+
+const lora = Lora({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-lora",
 });
 
 const playfairDisplay = Playfair_Display({
@@ -30,7 +36,7 @@ export default function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className={`${montserrat.variable} ${playfairDisplay.variable}`}
+      className={`${inter.variable} ${lora.variable}`}
     >
       <body>
         <ThemeProvider attribute="data-theme" defaultTheme="system">
