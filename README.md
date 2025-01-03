@@ -1,1 +1,1 @@
-# Social Media for Humanists
+# Social Media for Humanists Website
