@@ -7,6 +7,6 @@ export const contactData = [
     position: "Assistant Professor",
     institution: "Department of English, University of Illinois at Urbana-Champaign",
     email: "tessm@illinois.edu",
-    image: `/images/tess.jpg`,
+    image: `/social-media-for-humanists/images/tess.jpg`,
   },
 ];

@@ -183,7 +183,7 @@ const Blog: React.FC = () => {
         {/* Search Bar */}
         <div className="relative flex items-center w-full md:w-[60%] shadow-lg"
           style={{
-            backgroundColor: "var(--background)",
+            backgroundColor: "var(--background) !important",
             filter: "brightness(0.95)",
           }}>
           <FaSearch className="absolute left-3 text-gray-500" />

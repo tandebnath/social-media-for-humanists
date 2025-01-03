@@ -99,7 +99,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
         <Link href="/">
           <div className="flex items-center">
             <Image
-              src="/images/logo.svg"
+              src="/social-media-for-humanists/images/logo.svg"
               alt="Social Media for Humanists Logo"
               width={80}
               height={80}
