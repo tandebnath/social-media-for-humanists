@@ -147,7 +147,7 @@ const Home: React.FC = () => {
               <motion.div variants={fadeInVariants}>
                 <Link
                   href={`/blog/${blog.slug}`}
-                  className="inline-block mt-2 text-xs font-semibold hover:underline"
+                  className="inline-block mt-2 text-sm font-semibold hover:underline"
                   style={{ color: "var(--accent)" }}
                 >
                   Read More
