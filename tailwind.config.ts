@@ -13,32 +13,13 @@ const config: Config = {
         lora: "var(--font-lora)",
       },
       colors: {
-        background: {
-          DEFAULT: "var(--background)", // Light mode
-          dark: "var(--background)", // Dark mode
-        },
-        text: {
-          DEFAULT: "var(--text)", // Light mode
-          dark: "var(--text)", // Dark mode
-        },
-        primary: {
-          DEFAULT: "var(--primary)", // Light mode
-          dark: "var(--primary)", // Dark mode
-        },
-        secondary: {
-          DEFAULT: "var(--secondary)", // Light mode
-          dark: "var(--secondary)", // Dark mode
-        },
-        accent: {
-          DEFAULT: "var(--accent)", // Light mode
-          dark: "var(--accent)", // Dark mode
-        },
-        white: {
-          DEFAULT: "var(--white)",
-        },
-        black: {
-          DEFAULT: "var(--black)",
-        },
+        background: "#F8F8F8",
+        text: "#333333",
+        primary: "#003366",
+        secondary: "#0055aa",
+        accent: "#CC5500",
+        white: "#fff",
+        black: "#000",
       },
     },
   },

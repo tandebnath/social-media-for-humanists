@@ -12,7 +12,7 @@
   --black: #000;
 }
 
-[data-theme="dark"] {
+/* [data-theme="dark"] {
   --background: #F8F8F8;
   --text: #333333;
   --primary: #003366;
@@ -32,7 +32,6 @@
   --primary: #800020;
   --secondary: #7f1d1d;
   --accent: #28a7db; */
-}
 
 
 html {

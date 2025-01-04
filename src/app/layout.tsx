@@ -39,9 +39,7 @@ export default function RootLayout({
       className={`${inter.variable} ${lora.variable}`}
     >
       <body>
-        <ThemeProvider attribute="data-theme" defaultTheme="system">
-          <LayoutWrapper>{children}</LayoutWrapper>
-        </ThemeProvider>
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );
