@@ -181,7 +181,7 @@ const Blog: React.FC = () => {
         className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 mt-4 gap-4"
       >
         {/* Search Bar */}
-        <div className="relative flex items-center w-full md:w-[60%] shadow-lg"
+        <div className="relative flex items-center w-full md:w-[60%] shadow-lg bg-background"
           style={{
             backgroundColor: "var(--background) !important",
             filter: "brightness(0.95)",

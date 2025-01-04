@@ -14,24 +14,30 @@ const config: Config = {
       },
       colors: {
         background: {
-          DEFAULT: "#F9FAFB", // Light mode
-          dark: "#3B3B3B", // Dark mode
+          DEFAULT: "var(--background)", // Light mode
+          dark: "var(--background)", // Dark mode
         },
         text: {
-          DEFAULT: "#3B3B3B", // Light mode
-          dark: "#D6D6D6", // Dark mode
+          DEFAULT: "var(--text)", // Light mode
+          dark: "var(--text)", // Dark mode
         },
         primary: {
-          DEFAULT: "#0077CC", // Light mode
-          dark: "#800020", // Dark mode
+          DEFAULT: "var(--primary)", // Light mode
+          dark: "var(--primary)", // Dark mode
         },
         secondary: {
-          DEFAULT: "#0055AA", // Light mode
-          dark: "#7F1D1D", // Dark mode
+          DEFAULT: "var(--secondary)", // Light mode
+          dark: "var(--secondary)", // Dark mode
         },
         accent: {
-          DEFAULT: "#00AACC", // Light mode
-          dark: "#28a7db", // Dark mode
+          DEFAULT: "var(--accent)", // Light mode
+          dark: "var(--accent)", // Dark mode
+        },
+        white: {
+          DEFAULT: "var(--white)",
+        },
+        black: {
+          DEFAULT: "var(--black)",
         },
       },
     },
