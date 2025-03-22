@@ -1,28 +1,30 @@
-"use client";
+'use client'
 
-import Heading from "@/components/Heading";
-import { contactData } from "@/static/contact";
-import { pageSettingsData } from "@/static/pageSettings";
-import { richTextToHtml } from "@/utils/richTextParser";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { FaEnvelope } from "react-icons/fa";
+import Heading from '@/components/Heading'
+import { contactData } from '@/static/contact'
+import { pageSettingsData } from '@/static/pageSettings'
+import { richTextToHtml } from '@/utils/richTextParser'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { FaEnvelope } from 'react-icons/fa'
 
-const accentColor = "#36aa5d";
+const accentColor = '#36aa5d'
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || ''
 
+// Handle image URLs for static hosting (like GitHub Pages)
 const transformImageUrl = (url: string | null | undefined) => {
-  if (!url) return null;
-  return url.startsWith("/api/media/file/")
-    ? url.replace("/api/media/file/", "/uploads/")
-    : url;
-};
+  if (!url) return null
+  const transformed = url.startsWith('/api/media/file/')
+    ? url.replace('/api/media/file/', '/uploads/')
+    : url
+  return transformed.startsWith(BASE_PATH) ? transformed : `${BASE_PATH}${transformed}`
+}
 
 export default function Contact() {
-  const pageTitle =
-    pageSettingsData.find((p) => p.page === "contact")?.title || "Contact";
+  const pageTitle = pageSettingsData.find((p) => p.page === 'contact')?.title || 'Contact'
 
   if (!contactData || contactData.length === 0) {
-    return <p>No contact information available.</p>;
+    return <p>No contact information available.</p>
   }
 
   // Format + sort
@@ -31,12 +33,9 @@ export default function Contact() {
       id: String(entry.id),
       type: entry.type,
       sortOrder: entry.sortOrder ?? 999,
-      body:
-        entry.type === "text-block" && entry.body
-          ? richTextToHtml(entry.body as any)
-          : null,
+      body: entry.type === 'text-block' && entry.body ? richTextToHtml(entry.body as any) : null,
       contact:
-        entry.type === "contact" && entry.contact
+        entry.type === 'contact' && entry.contact
           ? {
               name: entry.contact.name,
               position: entry.contact.position,
@@ -49,16 +48,16 @@ export default function Contact() {
             }
           : null,
     }))
-    .sort((a, b) => a.sortOrder - b.sortOrder);
+    .sort((a, b) => a.sortOrder - b.sortOrder)
 
   const fadeInVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (index: number) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, delay: index * 0.2, ease: "easeOut" },
+      transition: { duration: 0.5, delay: index * 0.2, ease: 'easeOut' },
     }),
-  };
+  }
 
   return (
     <motion.div initial="hidden" animate="visible" exit="hidden">
@@ -79,9 +78,9 @@ export default function Contact() {
 
       <Heading text={pageTitle} />
 
-      {/* Render all blocks */}
+      {/* Render text + contacts */}
       {formatted.map((entry, index) => {
-        if (entry.type === "text-block" && entry.body) {
+        if (entry.type === 'text-block' && entry.body) {
           return (
             <motion.div
               key={entry.id}
@@ -90,19 +89,19 @@ export default function Contact() {
               custom={index}
               dangerouslySetInnerHTML={{ __html: entry.body }}
             />
-          );
+          )
         }
 
-        if (entry.type === "contact" && entry.contact) {
-          const c = entry.contact;
+        if (entry.type === 'contact' && entry.contact) {
+          const c = entry.contact
           return (
             <motion.div
               key={entry.id}
               className="flex flex-col items-center justify-center p-6 shadow-lg hover:shadow-xl transition-shadow overflow-hidden w-full max-w-xl mb-8 mx-auto"
               style={{
-                backgroundColor: "var(--background)",
-                color: "var(--text)",
-                filter: "brightness(0.97)",
+                backgroundColor: 'var(--background)',
+                color: 'var(--text)',
+                filter: 'brightness(0.97)',
               }}
               variants={fadeInVariants}
               custom={index}
@@ -114,19 +113,12 @@ export default function Contact() {
                   className="w-20 h-20 rounded-full mb-4 object-cover shadow-md border-4 border-gray-200"
                 />
               )}
-              <h3
-                className="text-xl font-semibold mb-2"
-                style={{ color: "var(--primary)" }}
-              >
+              <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--primary)' }}>
                 {c.name}
               </h3>
-              <p className="text-sm font-medium text-gray-600 mb-1">
-                {c.position}
-              </p>
+              <p className="text-sm font-medium text-gray-600 mb-1">{c.position}</p>
               {c.institution && (
-                <p className="text-sm font-medium text-gray-500">
-                  {c.institution}
-                </p>
+                <p className="text-sm font-medium text-gray-500">{c.institution}</p>
               )}
               <div className="w-full h-[1px] bg-gray-300 my-4"></div>
               <div className="flex items-center justify-center space-x-2">
@@ -134,17 +126,17 @@ export default function Contact() {
                 <a
                   href={`mailto:${c.email}`}
                   className="text-base font-medium hover:underline"
-                  style={{ color: "var(--accent)" }}
+                  style={{ color: 'var(--accent)' }}
                 >
                   {c.email}
                 </a>
               </div>
             </motion.div>
-          );
+          )
         }
 
-        return null;
+        return null
       })}
     </motion.div>
-  );
+  )
 }
