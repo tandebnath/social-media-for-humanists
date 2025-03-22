@@ -1,110 +1,114 @@
-"use client";
+'use client'
 
-import { useState, useMemo } from "react";
-import Dropdown from "rc-dropdown";
-import "rc-dropdown/assets/index.css";
-import { blogData } from "@/modules/BlogData";
-import Link from "next/link";
-import {
-  FaUser,
-  FaCalendarAlt,
-  FaClock,
-  FaSearch,
-  FaTimes,
-  FaFilter,
-} from "react-icons/fa";
-import Heading from "@/components/Heading";
-import { motion } from "framer-motion";
+import { useState, useMemo } from 'react'
+import Dropdown from 'rc-dropdown'
+import 'rc-dropdown/assets/index.css'
+import Link from 'next/link'
+import { FaUser, FaCalendarAlt, FaClock, FaSearch, FaTimes, FaFilter } from 'react-icons/fa'
+import Heading from '@/components/Heading'
+import { motion } from 'framer-motion'
+
+import { blogData } from '@/static/blog'
+import { richTextToHtml } from '@/utils/richTextParser'
+import { pageSettingsData } from '@/static/pageSettings'
 
 interface BlogPost {
-  title: string;
-  author: string;
-  datePosted: string;
-  shortDescription: string;
-  slug: string;
-  keywords: string[];
-  readTime: number;
+  id: string
+  title: string
+  author: string
+  datePosted: string
+  shortDescriptionHtml: string // 🔄 changed
+  slug: string
+  keywords: string[]
+  readTime: number
 }
 
 const Blog: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [dropdownVisible, setDropdownVisible] = useState(false); // Controls dropdown visibility
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [dropdownVisible, setDropdownVisible] = useState(false)
 
-  const postsPerPage = 5;
+  const postsPerPage = 3
+
+  // Get page title
+  const pageTitle = pageSettingsData.find((p) => p.page === 'blog')?.title || 'Blog'
+
+  // Format the raw blog data once
+  const formattedBlogData: BlogPost[] = useMemo(() => {
+    return blogData.map((post: any) => ({
+      id: String(post.id),
+      title: post.title,
+      author: post.author,
+      datePosted: post.datePosted,
+      shortDescriptionHtml: richTextToHtml(post.shortDescription),
+      slug: post.slug,
+      keywords: post.keywords.map((k: any) =>
+        typeof k === 'string' ? k.toLowerCase() : k.keyword.toLowerCase(),
+      ),
+      readTime: post.readTime,
+    }))
+  }, [])
 
   const uniqueKeywords = useMemo(() => {
-    const allKeywords = blogData.flatMap((post) =>
-      post.keywords.map((kw) => kw.toLowerCase())
-    );
-    return Array.from(new Set(allKeywords));
-  }, []);
+    const allKeywords = formattedBlogData.flatMap((post) => post.keywords)
+    return Array.from(new Set(allKeywords))
+  }, [formattedBlogData])
 
   const handleKeywordToggle = (keyword: string) => {
-    setCurrentPage(1);
+    setCurrentPage(1)
     setSelectedKeywords((prev) =>
-      prev.includes(keyword)
-        ? prev.filter((k) => k !== keyword)
-        : [...prev, keyword]
-    );
-  };
+      prev.includes(keyword) ? prev.filter((k) => k !== keyword) : [...prev, keyword],
+    )
+  }
 
   const clearKeywords = () => {
-    setSelectedKeywords([]);
-    setCurrentPage(1);
-  };
+    setSelectedKeywords([])
+    setCurrentPage(1)
+  }
 
   const filteredPosts = useMemo(() => {
-    return blogData.filter((post) => {
+    return formattedBlogData.filter((post) => {
       if (searchQuery) {
-        const combined = (post.title + " " + post.author).toLowerCase();
+        const combined = (post.title + ' ' + post.author).toLowerCase()
         if (!combined.includes(searchQuery.toLowerCase())) {
-          return false;
+          return false
         }
       }
       if (selectedKeywords.length > 0) {
-        const postKeywordsLower = post.keywords.map((kw) => kw.toLowerCase());
-        const matches = selectedKeywords.some((kw) =>
-          postKeywordsLower.includes(kw)
-        );
-        if (!matches) return false;
+        const matches = selectedKeywords.some((kw) => post.keywords.includes(kw))
+        if (!matches) return false
       }
-      return true;
-    });
-  }, [searchQuery, selectedKeywords]);
+      return true
+    })
+  }, [searchQuery, selectedKeywords, formattedBlogData])
 
   const paginatedPosts = useMemo(() => {
-    const startIndex = (currentPage - 1) * postsPerPage;
-    const endIndex = startIndex + postsPerPage;
-    return filteredPosts.slice(startIndex, endIndex);
-  }, [filteredPosts, currentPage]);
+    const startIndex = (currentPage - 1) * postsPerPage
+    return filteredPosts.slice(startIndex, startIndex + postsPerPage)
+  }, [filteredPosts, currentPage])
 
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage)
 
   const fadeInVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (index: number) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, delay: index * 0.2, ease: "easeOut" },
+      transition: { duration: 0.5, delay: index * 0.2, ease: 'easeOut' },
     }),
-  };
+  }
 
   const clearSearch = () => {
-    setSearchQuery("");
-    setCurrentPage(1);
-  };
+    setSearchQuery('')
+    setCurrentPage(1)
+  }
 
-  // Dropdown content
   const dropdownContent = (
     <div
       className="w-[18rem] p-4 shadow-lg"
-      style={{
-        backgroundColor: "var(--background)",
-        filter: "brightness(0.95)", // Darkens the background
-      }}
-      onClick={(e) => e.stopPropagation()} // Prevents the dropdown from closing when clicking inside
+      style={{ backgroundColor: 'var(--background)', filter: 'brightness(0.95)' }}
+      onClick={(e) => e.stopPropagation()}
     >
       <div className="flex justify-between items-center mb-3">
         <div />
@@ -112,37 +116,22 @@ const Blog: React.FC = () => {
           type="button"
           onClick={clearKeywords}
           className="text-sm font-semibold underline"
-          style={{ color: "var(--accent)" }}
+          style={{ color: 'var(--accent)' }}
         >
           Clear All
         </button>
       </div>
-
-      {/* Chips */}
       {selectedKeywords.length > 0 && (
         <div className="mb-3 flex flex-wrap gap-2">
           {selectedKeywords.map((kw) => (
-            <div
-              key={kw}
-              className="inline-flex items-center px-2 py-1 bg-blue-200"
-            >
+            <div key={kw} className="inline-flex items-center px-2 py-1 bg-blue-200">
               <span className="text-sm mr-1">{kw}</span>
-              <FaTimes
-                className="cursor-pointer"
-                onClick={() => handleKeywordToggle(kw)}
-              />
+              <FaTimes className="cursor-pointer" onClick={() => handleKeywordToggle(kw)} />
             </div>
           ))}
         </div>
       )}
-
-      {/* Keyword Checkboxes */}
-      <div
-        className="max-h-48 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200"
-        style={{
-          scrollbarWidth: "auto", // Always show the scrollbar
-        }}
-      >
+      <div className="max-h-48 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
         {uniqueKeywords.map((keyword) => (
           <div key={keyword} className="flex items-center space-x-1 text-sm mb-2">
             <input
@@ -155,7 +144,7 @@ const Blog: React.FC = () => {
         ))}
       </div>
     </div>
-  );
+  )
 
   return (
     <motion.div initial="hidden" animate="visible" exit="hidden">
@@ -172,7 +161,8 @@ const Blog: React.FC = () => {
           <li className="text-gray-700 font-semibold">Blog</li>
         </ul>
       </div>
-      <Heading text="Blog Posts" />
+
+      <Heading text={pageTitle} />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -180,12 +170,10 @@ const Blog: React.FC = () => {
         transition={{ duration: 0.5 }}
         className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 mt-4 gap-4"
       >
-        {/* Search Bar */}
-        <div className="relative flex items-center w-full md:w-[60%] shadow-lg bg-background"
-          style={{
-            backgroundColor: "var(--background)",
-            filter: "brightness(0.95)",
-          }}>
+        <div
+          className="relative flex items-center w-full md:w-[60%] shadow-lg bg-background"
+          style={{ backgroundColor: 'var(--background)', filter: 'brightness(0.95)' }}
+        >
           <FaSearch className="absolute left-3 text-gray-500" />
           <input
             type="text"
@@ -193,8 +181,8 @@ const Blog: React.FC = () => {
             className="w-full pl-10 pr-10 py-2"
             value={searchQuery}
             onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setCurrentPage(1);
+              setSearchQuery(e.target.value)
+              setCurrentPage(1)
             }}
           />
           {searchQuery && (
@@ -205,22 +193,18 @@ const Blog: React.FC = () => {
           )}
         </div>
 
-        {/* Filter Button with rc-dropdown */}
         <Dropdown
-          trigger={["click"]}
+          trigger={['click']}
           overlay={dropdownContent}
           animation="slide-up"
           placement="bottomRight"
           visible={dropdownVisible}
-          onVisibleChange={(visible) => setDropdownVisible(visible)} // Handles dropdown visibility
+          onVisibleChange={setDropdownVisible}
         >
           <button
             type="button"
             className="inline-flex items-center gap-2 px-5 py-2 shadow-lg cursor-pointer"
-            style={{
-              backgroundColor: "var(--background)",
-              filter: "brightness(0.95)",
-            }}
+            style={{ backgroundColor: 'var(--background)', filter: 'brightness(0.95)' }}
           >
             <FaFilter />
             Filter by Keywords
@@ -228,29 +212,30 @@ const Blog: React.FC = () => {
         </Dropdown>
       </motion.div>
 
-      {/* Blog Posts */}
+      {/* Blog Cards */}
       <motion.div className="space-y-8" initial="hidden" animate="visible">
-        {paginatedPosts.map((post: BlogPost, index: number) => {
-          const formattedDate = new Date(post.datePosted).toLocaleDateString(
-            "en-US",
-            { day: "numeric", month: "long", year: "numeric" }
-          );
+        {paginatedPosts.map((post, index) => {
+          const formattedDate = new Date(post.datePosted).toLocaleDateString('en-US', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })
 
           return (
             <motion.div
-              key={index}
+              key={post.id}
               className="w-full p-6 border-l-4 shadow-md hover:shadow-lg transition-shadow"
               style={{
-                backgroundColor: "var(--background)",
-                color: "var(--text)",
-                borderColor: "var(--accent)",
+                backgroundColor: 'var(--background)',
+                color: 'var(--text)',
+                borderColor: 'var(--accent)',
               }}
               variants={fadeInVariants}
               custom={index}
             >
               <motion.h3
                 className="text-xl font-semibold mb-2 hover:underline"
-                style={{ color: "var(--primary)" }}
+                style={{ color: 'var(--primary)' }}
                 variants={fadeInVariants}
               >
                 <Link href={`/blog/${post.slug}`}>{post.title}</Link>
@@ -258,7 +243,7 @@ const Blog: React.FC = () => {
 
               <motion.div
                 className="flex items-center text-sm mb-4 flex-wrap"
-                style={{ color: "var(--secondary)" }}
+                style={{ color: 'var(--secondary)' }}
                 variants={fadeInVariants}
               >
                 <div className="flex items-center mr-4 mb-2">
@@ -270,57 +255,55 @@ const Blog: React.FC = () => {
                   {formattedDate}
                 </div>
                 <div className="flex items-center mb-2">
-                  <FaClock className="mr-1" style={{ color: "var(--primary)" }} />
+                  <FaClock className="mr-1" style={{ color: 'var(--primary)' }} />
                   {post.readTime} min read
                 </div>
               </motion.div>
 
-              <motion.p className="text-base mb-4" variants={fadeInVariants}>
-                {post.shortDescription}
-              </motion.p>
+              <motion.div
+                className="text-base mb-4"
+                variants={fadeInVariants}
+                dangerouslySetInnerHTML={{ __html: post.shortDescriptionHtml }}
+              />
 
               <motion.div variants={fadeInVariants}>
                 <Link
                   href={`/blog/${post.slug}`}
                   className="inline-block mt-2 text-sm font-semibold hover:underline"
-                  style={{ color: "var(--accent)" }}
+                  style={{ color: 'var(--accent)' }}
                 >
                   Read More
                 </Link>
               </motion.div>
             </motion.div>
-          );
+          )
         })}
       </motion.div>
 
       {/* Pagination */}
-      <motion.div
-        className="flex justify-center mt-8"
-        initial="hidden"
-        animate="visible"
-      >
+      <motion.div className="flex justify-center mt-8" initial="hidden" animate="visible">
         {Array.from({ length: totalPages }, (_, idx) => {
-          const pageNum = idx + 1;
-          const isActive = currentPage === pageNum;
+          const pageNum = idx + 1
+          const isActive = currentPage === pageNum
           return (
             <motion.button
               key={pageNum}
               className="px-4 py-2 mx-1 border"
               style={{
-                backgroundColor: isActive ? "var(--primary)" : "#ffffff",
-                color: isActive ? "var(--background)" : "var(--text)",
-                borderColor: isActive ? "var(--primary)" : "var(--secondary)",
+                backgroundColor: isActive ? 'var(--primary)' : '#ffffff',
+                color: isActive ? 'var(--background)' : 'var(--text)',
+                borderColor: isActive ? 'var(--primary)' : 'var(--secondary)',
               }}
               onClick={() => setCurrentPage(pageNum)}
               variants={fadeInVariants}
             >
               {pageNum}
             </motion.button>
-          );
+          )
         })}
       </motion.div>
     </motion.div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog

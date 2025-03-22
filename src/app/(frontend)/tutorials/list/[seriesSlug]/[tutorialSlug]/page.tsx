@@ -1,7 +1,8 @@
-import { tutorialsListData } from "@/modules/TutorialsListData";
+import { tutorialsData } from "@/static/tutorials";
 import { notFound } from "next/navigation";
 import TutorialsContent from "@/components/TutorialsContent";
 import Link from "next/link";
+import { richTextToHtml } from "@/utils/richTextParser";
 
 interface Params {
   params: {
@@ -10,16 +11,17 @@ interface Params {
   };
 }
 
-// Generate static params for all tutorial slugs
 export async function generateStaticParams() {
   const params: { seriesSlug: string; tutorialSlug: string }[] = [];
 
-  tutorialsListData.forEach((series) => {
+  tutorialsData.forEach((series) => {
     series.tutorials.forEach((tutorial) => {
-      params.push({
-        seriesSlug: series.seriesSlug,
-        tutorialSlug: tutorial.slug,
-      });
+      if (tutorial.contentType === "text") {
+        params.push({
+          seriesSlug: series.seriesSlug,
+          tutorialSlug: tutorial.slug,
+        });
+      }
     });
   });
 
@@ -29,28 +31,19 @@ export async function generateStaticParams() {
 const TutorialPage: React.FC<Params> = ({ params }) => {
   const { seriesSlug, tutorialSlug } = params;
 
-  // Find the tutorial series
-  const series = tutorialsListData.find(
-    (series) => series.seriesSlug === seriesSlug
-  );
+  const series = tutorialsData.find((s) => s.seriesSlug === seriesSlug);
+  if (!series) return notFound();
 
-  if (!series) {
-    return notFound();
-  }
+  const tutorial = series.tutorials.find((t) => t.slug === tutorialSlug);
+  if (!tutorial || tutorial.contentType !== "text" || !tutorial.content) return notFound();
 
-  // Find the specific tutorial within the series
-  const tutorial = series.tutorials.find(
-    (tutorial) => tutorial.slug === tutorialSlug
-  );
-
-  if (!tutorial) {
-    return notFound();
-  }
-
-  // Render only if contentType is "text"
-  if (tutorial.contentType !== "text" || !Array.isArray(tutorial.content)) {
-    return notFound(); // If not text type or content isn't an array
-  }
+  // Convert Lexical JSON to HTML
+  const tutorialContent = richTextToHtml(tutorial.content as any, {
+    paragraphSpacing: "1.25rem",
+    underlineColor: "var(--accent)",
+    underlineThickness: "0.0625rem",
+    underlineOffset: "0.2rem"
+  });
 
   return (
     <div
@@ -95,7 +88,7 @@ const TutorialPage: React.FC<Params> = ({ params }) => {
       <TutorialsContent
         title={tutorial.title}
         description={tutorial.description}
-        content={tutorial.content}
+        contentHtml={tutorialContent}
         seriesSlug={seriesSlug}
       />
     </div>

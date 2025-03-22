@@ -376,7 +376,7 @@ export const tutorialsData = [
         "linkContent": "http://colab.research.google.com/"
       }
     ],
-    "updatedAt": "2025-03-21T20:20:07.323Z",
+    "updatedAt": "2025-03-22T01:38:43.630Z",
     "createdAt": "2025-03-21T20:20:07.324Z"
   }
 ];

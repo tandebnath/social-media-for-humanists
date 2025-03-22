@@ -1,26 +1,40 @@
-import { blogData } from "@/modules/BlogData";
-import { notFound } from "next/navigation";
-import BlogPostContent from "@/components/BlogPostContent";
-import Link from "next/link";
+import { blogData } from '@/static/blog'
+import { notFound } from 'next/navigation'
+import BlogPostContent from '@/components/BlogPostContent'
+import Link from 'next/link'
+import { richTextToHtml } from '@/utils/richTextParser'
+import { SerializedEditorState, SerializedLexicalNode } from '@payloadcms/richtext-lexical/lexical'
 
 interface Params {
   params: {
-    slug: string;
-  };
+    slug: string
+  }
 }
 
 export async function generateStaticParams() {
   return blogData.map((post) => ({
     slug: post.slug,
-  }));
+  }))
 }
 
 const BlogPostPage: React.FC<Params> = ({ params }) => {
-  const blogPost = blogData.find((post) => post.slug === params.slug);
+  const blogPost = blogData.find((post) => post.slug === params.slug) as {
+    title: string
+    author: string
+    datePosted: string
+    readTime: number
+    longDescription: SerializedEditorState<SerializedLexicalNode>
+  }
 
   if (!blogPost) {
-    return notFound();
+    return notFound()
   }
+
+  console.log(blogPost.longDescription);
+
+  const longDescriptionHtml = richTextToHtml(blogPost?.longDescription)
+
+  console.log(longDescriptionHtml);
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -37,7 +51,7 @@ const BlogPostPage: React.FC<Params> = ({ params }) => {
           </li>
           <li>
             <Link href="/blog" className="hover:underline">
-              Blog Posts
+              Blog
             </Link>
           </li>
           <li>
@@ -52,11 +66,11 @@ const BlogPostPage: React.FC<Params> = ({ params }) => {
         title={blogPost.title}
         author={blogPost.author}
         datePosted={blogPost.datePosted}
-        readTime={blogPost.readTime} // Pass the readTime to BlogPostContent
-        longDescription={blogPost.longDescription}
+        readTime={blogPost.readTime}
+        longDescriptionHtml={longDescriptionHtml}
       />
     </div>
-  );
-};
+  )
+}
 
-export default BlogPostPage;
+export default BlogPostPage

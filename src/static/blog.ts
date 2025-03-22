@@ -1,7 +1,7 @@
 export const blogData = [
   {
     "id": 5,
-    "title": "Major Project Launch for Data Insights",
+    "title": "Project Launch for Data Insights",
     "author": "Phil Dunphy",
     "datePosted": "2022-07-20T12:00:00.000Z",
     "shortDescription": {
@@ -14,7 +14,7 @@ export const blogData = [
                 "format": 0,
                 "mode": "normal",
                 "style": "",
-                "text": "We've just launched an ambitious project aimed at leveraging data analysis for social media insights.",
+                "text": "We've just launched a project aimed at leveraging data analysis for social media insights.",
                 "type": "text",
                 "version": 1
               }
@@ -106,7 +106,7 @@ export const blogData = [
       }
     ],
     "readTime": 5,
-    "updatedAt": "2025-03-21T20:36:33.684Z",
+    "updatedAt": "2025-03-22T00:52:38.230Z",
     "createdAt": "2025-03-21T20:36:33.685Z"
   },
   {

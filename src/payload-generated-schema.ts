@@ -298,6 +298,28 @@ export const tutorials_overview = sqliteTable(
   }),
 )
 
+export const website_settings = sqliteTable(
+  'website_settings',
+  {
+    id: integer('id').primaryKey(),
+    siteName: text('site_name').notNull(),
+    logo: integer('logo_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    updatedAt: text('updated_at')
+      .notNull()
+      .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+    createdAt: text('created_at')
+      .notNull()
+      .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+  },
+  (columns) => ({
+    website_settings_logo_idx: index('website_settings_logo_idx').on(columns.logo),
+    website_settings_updated_at_idx: index('website_settings_updated_at_idx').on(columns.updatedAt),
+    website_settings_created_at_idx: index('website_settings_created_at_idx').on(columns.createdAt),
+  }),
+)
+
 export const payload_locked_documents = sqliteTable(
   'payload_locked_documents',
   {
@@ -339,6 +361,7 @@ export const payload_locked_documents_rels = sqliteTable(
     homeID: integer('home_id'),
     tutorialsID: integer('tutorials_id'),
     'tutorials-overviewID': integer('tutorials_overview_id'),
+    'website-settingsID': integer('website_settings_id'),
   },
   (columns) => ({
     order: index('payload_locked_documents_rels_order_idx').on(columns.order),
@@ -371,6 +394,9 @@ export const payload_locked_documents_rels = sqliteTable(
     payload_locked_documents_rels_tutorials_overview_id_idx: index(
       'payload_locked_documents_rels_tutorials_overview_id_idx',
     ).on(columns['tutorials-overviewID']),
+    payload_locked_documents_rels_website_settings_id_idx: index(
+      'payload_locked_documents_rels_website_settings_id_idx',
+    ).on(columns['website-settingsID']),
     parentFk: foreignKey({
       columns: [columns['parent']],
       foreignColumns: [payload_locked_documents.id],
@@ -420,6 +446,11 @@ export const payload_locked_documents_rels = sqliteTable(
       columns: [columns['tutorials-overviewID']],
       foreignColumns: [tutorials_overview.id],
       name: 'payload_locked_documents_rels_tutorials_overview_fk',
+    }).onDelete('cascade'),
+    'website-settingsIdFk': foreignKey({
+      columns: [columns['website-settingsID']],
+      foreignColumns: [website_settings.id],
+      name: 'payload_locked_documents_rels_website_settings_fk',
     }).onDelete('cascade'),
   }),
 )
@@ -537,6 +568,13 @@ export const relations_tutorials = relations(tutorials, ({ many }) => ({
   }),
 }))
 export const relations_tutorials_overview = relations(tutorials_overview, () => ({}))
+export const relations_website_settings = relations(website_settings, ({ one }) => ({
+  logo: one(media, {
+    fields: [website_settings.logo],
+    references: [media.id],
+    relationName: 'logo',
+  }),
+}))
 export const relations_payload_locked_documents_rels = relations(
   payload_locked_documents_rels,
   ({ one }) => ({
@@ -590,6 +628,11 @@ export const relations_payload_locked_documents_rels = relations(
       references: [tutorials_overview.id],
       relationName: 'tutorials-overview',
     }),
+    'website-settingsID': one(website_settings, {
+      fields: [payload_locked_documents_rels['website-settingsID']],
+      references: [website_settings.id],
+      relationName: 'website-settings',
+    }),
   }),
 )
 export const relations_payload_locked_documents = relations(
@@ -634,6 +677,7 @@ type DatabaseSchema = {
   tutorials_tutorials: typeof tutorials_tutorials
   tutorials: typeof tutorials
   tutorials_overview: typeof tutorials_overview
+  website_settings: typeof website_settings
   payload_locked_documents: typeof payload_locked_documents
   payload_locked_documents_rels: typeof payload_locked_documents_rels
   payload_preferences: typeof payload_preferences
@@ -650,6 +694,7 @@ type DatabaseSchema = {
   relations_tutorials_tutorials: typeof relations_tutorials_tutorials
   relations_tutorials: typeof relations_tutorials
   relations_tutorials_overview: typeof relations_tutorials_overview
+  relations_website_settings: typeof relations_website_settings
   relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels
   relations_payload_locked_documents: typeof relations_payload_locked_documents
   relations_payload_preferences_rels: typeof relations_payload_preferences_rels

@@ -1,4 +1,4 @@
-export const tutorials-overviewData = [
+export const tutorialsOverviewData = [
   {
     "id": 1,
     "content": {
@@ -39,7 +39,7 @@ export const tutorials-overviewData = [
                 "children": [
                   {
                     "detail": 0,
-                    "format": 0,
+                    "format": 9,
                     "mode": "normal",
                     "style": "",
                     "text": "Introduction to Social Media Analytics",
@@ -52,6 +52,7 @@ export const tutorials-overviewData = [
                 "indent": 0,
                 "type": "link",
                 "version": 3,
+                "textFormat": 9,
                 "fields": {
                   "linkType": "custom",
                   "newTab": false,
@@ -72,7 +73,7 @@ export const tutorials-overviewData = [
                 "children": [
                   {
                     "detail": 0,
-                    "format": 0,
+                    "format": 9,
                     "mode": "normal",
                     "style": "",
                     "text": "Getting Started with Social Media Analytics",
@@ -85,6 +86,7 @@ export const tutorials-overviewData = [
                 "indent": 0,
                 "type": "link",
                 "version": 3,
+                "textFormat": 9,
                 "fields": {
                   "linkType": "custom",
                   "newTab": false,
@@ -97,7 +99,7 @@ export const tutorials-overviewData = [
                 "format": 0,
                 "mode": "normal",
                 "style": "",
-                "text": ", where you'll Learn the basics of social media analytics, tools, and setup, and ",
+                "text": ", where you'll learn the basics of social media analytics, tools, and setup, and ",
                 "type": "text",
                 "version": 1
               },
@@ -105,7 +107,7 @@ export const tutorials-overviewData = [
                 "children": [
                   {
                     "detail": 0,
-                    "format": 0,
+                    "format": 9,
                     "mode": "normal",
                     "style": "",
                     "text": "Exploring Metrics and KPIs",
@@ -118,6 +120,7 @@ export const tutorials-overviewData = [
                 "indent": 0,
                 "type": "link",
                 "version": 3,
+                "textFormat": 9,
                 "fields": {
                   "linkType": "custom",
                   "newTab": true,
@@ -139,7 +142,7 @@ export const tutorials-overviewData = [
                 "format": 0,
                 "mode": "normal",
                 "style": "",
-                "text": ", where you'll Understand the key metrics and KPIs for analyzing social media.",
+                "text": ", where you'll understand the key metrics and KPIs for analyzing social media.",
                 "type": "text",
                 "version": 1
               }
@@ -167,7 +170,7 @@ export const tutorials-overviewData = [
                 "children": [
                   {
                     "detail": 0,
-                    "format": 0,
+                    "format": 9,
                     "mode": "normal",
                     "style": "",
                     "text": "Text Analysis with Python",
@@ -180,6 +183,7 @@ export const tutorials-overviewData = [
                 "indent": 0,
                 "type": "link",
                 "version": 3,
+                "textFormat": 9,
                 "fields": {
                   "linkType": "custom",
                   "newTab": false,
@@ -200,7 +204,7 @@ export const tutorials-overviewData = [
                 "children": [
                   {
                     "detail": 0,
-                    "format": 0,
+                    "format": 9,
                     "mode": "normal",
                     "style": "",
                     "text": "Cleaning Text Data",
@@ -213,6 +217,7 @@ export const tutorials-overviewData = [
                 "indent": 0,
                 "type": "link",
                 "version": 3,
+                "textFormat": 9,
                 "fields": {
                   "linkType": "custom",
                   "newTab": true,
@@ -222,7 +227,7 @@ export const tutorials-overviewData = [
               },
               {
                 "detail": 0,
-                "format": 64,
+                "format": 65,
                 "mode": "normal",
                 "style": "",
                 "text": " (↗)",
@@ -231,10 +236,19 @@ export const tutorials-overviewData = [
               },
               {
                 "detail": 0,
+                "format": 1,
+                "mode": "normal",
+                "style": "",
+                "text": ",",
+                "type": "text",
+                "version": 1
+              },
+              {
+                "detail": 0,
                 "format": 0,
                 "mode": "normal",
                 "style": "",
-                "text": ", where you'll Learn how to preprocess and clean text data using Python, ",
+                "text": " where you'll learn how to preprocess and clean text data using Python, ",
                 "type": "text",
                 "version": 1
               },
@@ -242,7 +256,7 @@ export const tutorials-overviewData = [
                 "children": [
                   {
                     "detail": 0,
-                    "format": 0,
+                    "format": 9,
                     "mode": "normal",
                     "style": "",
                     "text": "Sentiment Analysis Basics",
@@ -255,6 +269,7 @@ export const tutorials-overviewData = [
                 "indent": 0,
                 "type": "link",
                 "version": 3,
+                "textFormat": 9,
                 "fields": {
                   "linkType": "custom",
                   "newTab": false,
@@ -267,7 +282,7 @@ export const tutorials-overviewData = [
                 "format": 0,
                 "mode": "normal",
                 "style": "",
-                "text": ", where you'll Get an introduction to sentiment analysis with Python libraries, and ",
+                "text": ", where you'll get an introduction to sentiment analysis with Python libraries, and ",
                 "type": "text",
                 "version": 1
               },
@@ -275,7 +290,7 @@ export const tutorials-overviewData = [
                 "children": [
                   {
                     "detail": 0,
-                    "format": 0,
+                    "format": 9,
                     "mode": "normal",
                     "style": "",
                     "text": "Topic Modeling with NLP",
@@ -288,6 +303,7 @@ export const tutorials-overviewData = [
                 "indent": 0,
                 "type": "link",
                 "version": 3,
+                "textFormat": 9,
                 "fields": {
                   "linkType": "custom",
                   "newTab": false,
@@ -300,7 +316,7 @@ export const tutorials-overviewData = [
                 "format": 0,
                 "mode": "normal",
                 "style": "",
-                "text": ", where you'll Dive into topic modeling techniques with practical examples.",
+                "text": ", where you'll dive into topic modeling techniques with practical examples.",
                 "type": "text",
                 "version": 1
               }
@@ -328,7 +344,7 @@ export const tutorials-overviewData = [
                 "children": [
                   {
                     "detail": 0,
-                    "format": 0,
+                    "format": 9,
                     "mode": "normal",
                     "style": "",
                     "text": "Visualizing Data for Humanists",
@@ -341,6 +357,7 @@ export const tutorials-overviewData = [
                 "indent": 0,
                 "type": "link",
                 "version": 3,
+                "textFormat": 9,
                 "fields": {
                   "linkType": "custom",
                   "newTab": false,
@@ -361,7 +378,7 @@ export const tutorials-overviewData = [
                 "children": [
                   {
                     "detail": 0,
-                    "format": 0,
+                    "format": 9,
                     "mode": "normal",
                     "style": "",
                     "text": "Getting Started with Data Visualization",
@@ -374,6 +391,7 @@ export const tutorials-overviewData = [
                 "indent": 0,
                 "type": "link",
                 "version": 3,
+                "textFormat": 9,
                 "fields": {
                   "linkType": "custom",
                   "newTab": false,
@@ -386,7 +404,7 @@ export const tutorials-overviewData = [
                 "format": 0,
                 "mode": "normal",
                 "style": "",
-                "text": ", where you'll Get an overview of tools and libraries for effective data visualization, and ",
+                "text": ", where you'll get an overview of tools and libraries for effective data visualization, and ",
                 "type": "text",
                 "version": 1
               },
@@ -394,7 +412,7 @@ export const tutorials-overviewData = [
                 "children": [
                   {
                     "detail": 0,
-                    "format": 0,
+                    "format": 9,
                     "mode": "normal",
                     "style": "",
                     "text": "Creating Interactive Visualizations",
@@ -407,6 +425,7 @@ export const tutorials-overviewData = [
                 "indent": 0,
                 "type": "link",
                 "version": 3,
+                "textFormat": 9,
                 "fields": {
                   "linkType": "custom",
                   "newTab": true,
@@ -428,7 +447,7 @@ export const tutorials-overviewData = [
                 "format": 0,
                 "mode": "normal",
                 "style": "",
-                "text": ", where you'll Learn how to build interactive data visualizations step by step.",
+                "text": ", where you'll learn how to build interactive data visualizations step by step.",
                 "type": "text",
                 "version": 1
               }
@@ -469,7 +488,7 @@ export const tutorials-overviewData = [
         "version": 1
       }
     },
-    "updatedAt": "2025-03-21T20:38:26.943Z",
+    "updatedAt": "2025-03-22T01:13:57.081Z",
     "createdAt": "2025-03-21T20:38:26.943Z"
   }
 ];

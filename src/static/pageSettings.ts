@@ -1,9 +1,9 @@
-export const page-settingsData = [
+export const pageSettingsData = [
   {
     "id": 5,
     "page": "blog",
     "title": "Blog Posts",
-    "updatedAt": "2025-03-21T03:54:34.032Z",
+    "updatedAt": "2025-03-22T01:05:50.495Z",
     "createdAt": "2025-03-21T03:54:34.032Z"
   },
   {

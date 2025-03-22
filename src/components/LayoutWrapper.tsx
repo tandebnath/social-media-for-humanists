@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import Dropdown from "rc-dropdown";
 import "rc-dropdown/assets/index.css";
 import { FaBars, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { websiteSettingsData } from "@/static/websiteSettings";
 
 interface SubMenuItem {
   name: string;
@@ -34,11 +35,28 @@ interface LayoutWrapperProps {
 }
 
 const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const isActive = (path: string): boolean => pathname === path;
+  const isActive = (path: string) => pathname === path;
+
+  const transformImageUrl = (url: string | null | undefined) => {
+    if (!url) return null;
+    return url.startsWith("/api/media/file/")
+      ? url.replace("/api/media/file/", "/uploads/")
+      : url;
+  };
+
+  const siteData = websiteSettingsData[0];
+  const logoUrl = transformImageUrl(siteData?.logo?.url);
+  const siteName = siteData?.siteName || "Website";
+
+  // Split site name into two lines if needed
+  const nameWords = siteName.split(" ");
+  const mid = Math.ceil(nameWords.length / 2);
+  const line1 = nameWords.slice(0, mid).join(" ");
+  const line2 = nameWords.slice(mid).join(" ");
 
   const menuItems: MenuItem[] = [
     { name: "About", href: "/about" },
@@ -59,7 +77,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
       className="py-2"
       style={{
         backgroundColor: "var(--background)",
-        boxShadow: "0rem 0.25rem 0.5rem rgba(0, 0, 0, 0.2)", // Prominent shadow
+        boxShadow: "0rem 0.25rem 0.5rem rgba(0, 0, 0, 0.2)",
         width: "12rem",
       }}
     >
@@ -67,10 +85,12 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
         <li key={subItem.href}>
           <Link
             href={subItem.href}
-            className={`block px-4 py-2 text-lg font-bold transition-colors duration-200 ${isActive(subItem.href) ? "text-primary" : "text-text"
+            className={`block px-4 py-2 text-lg font-bold transition-colors duration-200 ${isActive(subItem.href)
+              ? "text-primary"
+              : "text-text"
               }`}
-            onClick={() => setIsDropdownOpen(false)} // Ensure arrow resets on click
-            style={{fontFamily: 'var(--font-lora)'}}
+            onClick={() => setIsDropdownOpen(false)}
+            style={{ fontFamily: "var(--font-lora)" }}
           >
             {subItem.name}
           </Link>
@@ -82,53 +102,42 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
   return (
     <div
       className="min-h-screen px-5 py-0"
-      style={{
-        backgroundColor: "var(--background)",
-        color: "var(--text)",
-      }}
+      style={{ backgroundColor: "var(--background)", color: "var(--text)" }}
     >
-      {/* Header Section */}
-      <header
-        className="w-full flex justify-between items-center px-4 py-4 md:justify-start"
-        style={{
-          backgroundColor: "var(--background)",
-          color: "var(--text)",
-        }}
-      >
+      {/* Header */}
+      <header className="w-full flex justify-between items-center px-4 py-4 md:justify-start">
         {/* Logo */}
         <Link href="/">
           <div className="flex items-center">
-            <Image
-              src="/social-media-for-humanists/images/logo.svg"
-              alt="Social Media for Humanists Logo"
-              width={80}
-              height={80}
-              className="cursor-pointer"
-            />
+            {logoUrl && (
+              <Image
+                src={logoUrl}
+                alt={siteData?.logo?.alt || "Logo"}
+                width={80}
+                height={80}
+                className="cursor-pointer"
+              />
+            )}
             <div
               className="ml-4 text-xl"
-              style={{ fontFamily: 'var(--font-lora)', color: 'var(--primary)' }}
+              style={{ fontFamily: "var(--font-lora)", color: "var(--primary)" }}
             >
-              <p className="font-bold leading-tight">
-                Social Media
-              </p>
-              <p className="font-bold leading-tight">
-                for Humanists
-              </p>
+              <p className="font-bold leading-tight">{line1}</p>
+              {line2 && <p className="font-bold leading-tight">{line2}</p>}
             </div>
           </div>
         </Link>
 
-        {/* Desktop Menu */}
-        <nav className="hidden md:flex space-x-8 mx-auto items-center" style={{fontFamily: 'var(--font-lora)'}}>
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex space-x-8 mx-auto items-center" style={{ fontFamily: "var(--font-lora)" }}>
           {menuItems.map((item) =>
             "hasSubMenu" in item && item.hasSubMenu ? (
               <Dropdown
                 key={item.name}
-                trigger={["hover", "click"]} // Enable hover and click
+                trigger={["hover", "click"]}
                 overlay={renderDropdownMenu(item.subItems)}
                 animation="slide-up"
-                onVisibleChange={(visible) => setIsDropdownOpen(visible)} // Track dropdown visibility
+                onVisibleChange={(visible) => setIsDropdownOpen(visible)}
               >
                 <span
                   className={`text-xl font-bold cursor-pointer flex items-center transition-transform duration-150 ease-out hover:scale-105 ${item.subItems.some((sub) => isActive(sub.href))
@@ -157,7 +166,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
           )}
         </nav>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Toggle */}
         <div className="md:hidden flex items-center">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -171,13 +180,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <nav
-          className="flex flex-col items-start md:hidden py-4 space-y-2"
-          style={{
-            backgroundColor: "var(--background)",
-            color: "var(--text)",
-          }}
-        >
+        <nav className="flex flex-col items-start md:hidden py-4 space-y-2">
           {menuItems.map((item) =>
             "hasSubMenu" in item && item.hasSubMenu ? (
               <div key={item.name} className="space-y-1">

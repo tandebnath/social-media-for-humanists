@@ -1,23 +1,36 @@
 "use client";
 
-import { blogData } from "@/modules/BlogData";
-import { homeData } from "@/modules/HomeData";
+import { homeData } from "@/static/home";
+import { blogData } from "@/static/blog";
+import { richTextToHtml } from "@/utils/richTextParser";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { FaUser, FaCalendarAlt } from "react-icons/fa";
-import { motion } from "framer-motion";
 
-interface BlogPost {
-  title: string;
-  author: string;
-  datePosted: string;
-  shortDescription: string;
-  slug: string;
-}
+// Color constants
+const accentColor = "#CC5500";
+const secondaryColor = "#0055aa";
 
-const Home: React.FC = () => {
-  const captionContent = homeData.find(
-    (data: any) => data.type === "caption"
-  )?.content as string[];
+const Home = () => {
+  // Format homepage content
+  const homeEntry = homeData[0];
+  const homeContent = homeEntry?.content
+    ? richTextToHtml(homeEntry.content as any, {
+        underlineColor: secondaryColor,
+        underlineThickness: "0.25rem",
+        underlineOffset: "0.25rem",
+      })
+    : "";
+
+  const maxUpdates = homeEntry?.maxUpdates || 3;
+
+  // Format blogData to match expected structure
+  const formattedBlogPosts = blogData.slice(0, maxUpdates).map((post) => ({
+    ...post,
+    shortDescription: post.shortDescription
+      ? richTextToHtml(post.shortDescription as any)
+      : "",
+  }));
 
   const fadeInVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -40,21 +53,14 @@ const Home: React.FC = () => {
   return (
     <motion.div initial="hidden" animate="visible" exit="hidden">
       {/* Caption Section */}
-      <motion.section variants={fadeInVariants}>
-        {captionContent &&
-          captionContent.map((paragraph, index) => (
-            <motion.p
-              key={index}
-              className="text-base leading-relaxed mb-4"
-              style={{ color: "var(--text)" }}
-              variants={fadeInVariants}
-            >
-              {paragraph}
-            </motion.p>
-          ))}
-      </motion.section>
+      <motion.section
+        className="text-base leading-relaxed mb-10"
+        style={{ color: "var(--text)" }}
+        variants={fadeInVariants}
+        dangerouslySetInnerHTML={{ __html: homeContent }}
+      />
 
-      {/* Decorative Divider */}
+      {/* Divider */}
       <motion.div
         variants={fadeInVariants}
         className="mx-auto my-10 flex w-4/5 items-center justify-center"
@@ -72,87 +78,75 @@ const Home: React.FC = () => {
         ></div>
       </motion.div>
 
-      {/* Latest Blog Posts Section */}
+      {/* Latest Blog Posts */}
       <motion.section variants={fadeInVariants}>
-        {/* Heading + View All Link */}
         <motion.div
-          variants={fadeInVariants}
           className="flex items-center justify-between mb-6"
+          variants={fadeInVariants}
         >
-          <motion.h2
-            variants={fadeInVariants}
+          <h2 className="text-xl font-bold">Latest Blog Posts</h2>
+          <Link
+            href="/blog"
+            className="text-base underline font-semibold"
+            style={{ color: "var(--accent)" }}
           >
-            <span className="text-xl font-bold">
-              Latest Blog Posts
-            </span>
-          </motion.h2>
-          <motion.div variants={fadeInVariants}>
-            <Link
-              href="/blog"
-              className="text-base underline font-semibold"
-              style={{ color: "var(--accent)" }}
-            >
-              View All
-            </Link>
-          </motion.div>
+            View All
+          </Link>
         </motion.div>
 
-        {/* Responsive Grid: 1 col on xs, 2 on sm, 3 on lg, cards centered */}
         <motion.div
           className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center"
           initial="hidden"
           animate="visible"
         >
-          {blogData.slice(0, 3).map((blog: BlogPost, index: number) => (
+          {formattedBlogPosts.map((post, index) => (
             <motion.div
-              key={index}
+              key={post.id}
               custom={index}
               variants={cardVariants}
-              // Larger max width per card, ensuring they won't stretch too wide
               className="w-full max-w-2xl p-6 border-l-4 shadow-md hover:shadow-lg transition-shadow"
               style={{
                 backgroundColor: "var(--background)",
                 color: "var(--text)",
-                borderColor: "var(--accent)",
+                borderColor: accentColor,
               }}
             >
-              <motion.h3
-                className="text-lg font-semibold mb-3 hover:underline"
-                style={{ color: "var(--primary)" }}
-                variants={fadeInVariants}
-              >
-                <Link href={`/blog/${blog.slug}`}>{blog.title}</Link>
-              </motion.h3>
-              <motion.div
+              <h3 className="text-lg font-semibold mb-3 hover:underline">
+                <Link href={`/blog/${post.slug}`} style={{ color: "var(--primary)" }}>
+                  {post.title}
+                </Link>
+              </h3>
+
+              <div
                 className="flex items-center text-sm mb-3"
                 style={{ color: "var(--secondary)" }}
-                variants={fadeInVariants}
               >
                 <div className="flex items-center mr-3">
                   <FaUser className="mr-1" />
-                  {blog.author}
+                  {post.author}
                 </div>
                 <div className="flex items-center">
                   <FaCalendarAlt className="mr-1" />
-                  {new Date(blog.datePosted).toLocaleDateString("en-US", {
+                  {new Date(post.datePosted).toLocaleDateString("en-US", {
                     day: "numeric",
                     month: "long",
                     year: "numeric",
                   })}
                 </div>
-              </motion.div>
-              <motion.p className="text-base mb-4" variants={fadeInVariants}>
-                {blog.shortDescription}
-              </motion.p>
-              <motion.div variants={fadeInVariants}>
-                <Link
-                  href={`/blog/${blog.slug}`}
-                  className="inline-block mt-2 text-sm font-semibold hover:underline"
-                  style={{ color: "var(--accent)" }}
-                >
-                  Read More
-                </Link>
-              </motion.div>
+              </div>
+
+              <div
+                className="text-base mb-4"
+                dangerouslySetInnerHTML={{ __html: post.shortDescription }}
+              />
+
+              <Link
+                href={`/blog/${post.slug}`}
+                className="inline-block mt-2 text-sm font-semibold hover:underline"
+                style={{ color: accentColor }}
+              >
+                Read More
+              </Link>
             </motion.div>
           ))}
         </motion.div>

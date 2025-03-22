@@ -16,6 +16,7 @@ import { PageSettings } from './collections/PageSettings'
 
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { Media } from './collections/Media'
+import WebsiteSettings from './collections/WebsiteSettings'
 
 // import { defaultLexical } from '@/fields/defaultLexical'
 
@@ -42,7 +43,7 @@ export default buildConfig({
       url: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Users, Media, PageSettings, About, Contact, Blog, Home, Tutorials, TutorialsOverview],
+  collections: [Users, Media, PageSettings, About, Contact, Blog, Home, Tutorials, TutorialsOverview, WebsiteSettings],
   secret: process.env.PAYLOAD_SECRET || '',
   sharp,
   typescript: {

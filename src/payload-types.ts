@@ -76,6 +76,7 @@ export interface Config {
     home: Home;
     tutorials: Tutorial;
     'tutorials-overview': TutorialsOverview;
+    'website-settings': WebsiteSetting;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -91,6 +92,7 @@ export interface Config {
     home: HomeSelect<false> | HomeSelect<true>;
     tutorials: TutorialsSelect<false> | TutorialsSelect<true>;
     'tutorials-overview': TutorialsOverviewSelect<false> | TutorialsOverviewSelect<true>;
+    'website-settings': WebsiteSettingsSelect<false> | WebsiteSettingsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -460,6 +462,19 @@ export interface TutorialsOverview {
   createdAt: string;
 }
 /**
+ * Configure your website settings here!
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "website-settings".
+ */
+export interface WebsiteSetting {
+  id: number;
+  siteName: string;
+  logo?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
@@ -501,6 +516,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tutorials-overview';
         value: number | TutorialsOverview;
+      } | null)
+    | ({
+        relationTo: 'website-settings';
+        value: number | WebsiteSetting;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -702,6 +721,16 @@ export interface TutorialsSelect<T extends boolean = true> {
  */
 export interface TutorialsOverviewSelect<T extends boolean = true> {
   content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "website-settings_select".
+ */
+export interface WebsiteSettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  logo?: T;
   updatedAt?: T;
   createdAt?: T;
 }

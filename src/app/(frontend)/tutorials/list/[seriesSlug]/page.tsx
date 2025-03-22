@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { tutorialsListData } from "@/modules/TutorialsListData";
+import { tutorialsData } from "@/static/tutorials";
 
 interface Params {
   params: {
@@ -10,7 +10,7 @@ interface Params {
 // Export generateStaticParams to satisfy "output: export"
 export async function generateStaticParams() {
   // Generate params for all valid series slugs
-  return tutorialsListData.map((series) => ({
+  return tutorialsData.map((series) => ({
     seriesSlug: series.seriesSlug,
   }));
 }

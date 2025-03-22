@@ -72,7 +72,7 @@ export const aboutData = [
         "version": 1
       }
     },
-    "updatedAt": "2025-03-21T03:55:10.699Z",
+    "updatedAt": "2025-03-21T21:22:16.932Z",
     "createdAt": "2025-03-21T03:55:10.699Z"
   }
 ];
