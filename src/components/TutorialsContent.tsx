@@ -1,24 +1,24 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 interface TutorialsContentProps {
   title: string;
   description: string;
-  content: string[];
-  seriesSlug: string; // Added to navigate back to the series
+  contentHtml: string;
+  seriesSlug: string;
 }
 
 const TutorialsContent: React.FC<TutorialsContentProps> = ({
   title,
   description,
-  content,
+  contentHtml,
   seriesSlug,
 }) => {
-  const router = useRouter(); // For navigation back to List of Tutorials
+  const router = useRouter();
+
   const fadeInVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -46,7 +46,7 @@ const TutorialsContent: React.FC<TutorialsContentProps> = ({
         Back to List of Tutorials
       </button>
 
-      {/* Tutorial Title */}
+      {/* Title */}
       <motion.h1
         className="text-3xl font-bold mb-4"
         style={{ color: "var(--primary)" }}
@@ -55,19 +55,12 @@ const TutorialsContent: React.FC<TutorialsContentProps> = ({
         {title}
       </motion.h1>
 
-      {/* Tutorial Content */}
-      <div className="space-y-6">
-        {content.map((paragraph, index) => (
-          <motion.p
-            key={index}
-            className="text-base leading-relaxed"
-            style={{ color: "var(--text)" }}
-            variants={fadeInVariants}
-          >
-            {paragraph}
-          </motion.p>
-        ))}
-      </div>
+      {/* Rich HTML content */}
+      <motion.div
+        className="text-base leading-relaxed space-y-6"
+        dangerouslySetInnerHTML={{ __html: contentHtml }}
+        variants={fadeInVariants}
+      />
     </motion.div>
   );
 };
